@@ -1,7 +1,7 @@
 #Recursively choose a pivot and place smaller elements to the left and larger elements to the right
 #Time complexity for best case scenario is O(nlogn) and worst case scenario is O(n^2)
 #Space Complexity is O(1) as sorting is in place
-#Stable Sorting Algorithm
+#UnStable Sorting Algorithm
 
 def quickSort(arr, start, end):
     if start < end:
