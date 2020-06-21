@@ -2,6 +2,7 @@
 #Time complexity for best case scenario is O(nlogn) and worst case scenario is O(n^2)
 #Space Complexity is O(1) as sorting is in place
 #UnStable Sorting Algorithm
+import random
 
 def quickSort(arr, start, end):
     if start < end:
@@ -13,6 +14,8 @@ def quickSort(arr, start, end):
 
 
 def partition(arr, start, end):
+    randomIndex = random.randint(start, end+1)
+    arr[randomIndex], arr[end] = arr[end], arr[randomIndex]
     pivotValue = arr[end]
     pIndex = start
     for i in range(start,end):
