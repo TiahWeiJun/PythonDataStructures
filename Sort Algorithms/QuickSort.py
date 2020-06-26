@@ -1,5 +1,5 @@
 #Recursively choose a pivot and place smaller elements to the left and larger elements to the right
-#Time complexity for best case scenario is O(nlogn) and worst case scenario is O(n^2)
+#Time complexity for best case scenario is O(nlogn) and worst case scenario is O(n^2), but worst case scenario can be avoided by randomizing pivot
 #Space Complexity is O(1) as sorting is in place
 #UnStable Sorting Algorithm
 import random
@@ -26,6 +26,13 @@ def partition(arr, start, end):
     return pIndex
 
 
-unsortedArr = [1,4,4,2,6,5,3]
-quickSort(unsortedArr, 0 ,len(unsortedArr) - 1)
-print(unsortedArr)
+#unsortedArr = [1,4,4,2,6,5,3]
+#quickSort(unsortedArr, 0 ,len(unsortedArr) - 1)
+#print(unsortedArr)
+
+                
+def getTotalX(a, b):
+    # Write your code here
+   print(a, b)
+
+print(getTotalX([2,4], [16,32,96]))

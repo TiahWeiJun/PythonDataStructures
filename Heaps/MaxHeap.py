@@ -23,7 +23,7 @@ class MaxHeap:
         if right_child_idx > self.count:
             return left_child_idx
         else:
-            if self.list[left_child_idx] > self.list[right_child_idx]:
+            if self.list[left_child_idx] >= self.list[right_child_idx]:
                 return left_child_idx
 
             elif self.list[right_child_idx] > self.list[left_child_idx]:

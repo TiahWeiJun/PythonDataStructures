@@ -1,3 +1,7 @@
+#HeapSort involves iterating through an array to place the elements in a min heap, then we iterate over the length of the array and replace the smallest elements from left to right
+#Time complexity is O(nlogn) for best and worst case scenario
+#Unstable sorting algorithm
+
 import sys
 
 sys.path.insert(2, '/Users/Admin/Documents/Projects/DSA/Heaps')
