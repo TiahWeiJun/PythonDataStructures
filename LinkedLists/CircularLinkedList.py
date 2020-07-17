@@ -5,154 +5,139 @@ sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
 
 from Nodes import Node
 
-
-class CircularLinkedList:
+class CLL:
     def __init__(self):
         self.head = None
-    
-    #Visual representation of linked list
-    def visual(self):
+
+    def __repr__(self):
         arr = []
-        current_node = self.head
-        while current_node and current_node.get_next_node() != self.head:
-            arr.append(current_node)
-            current_node = current_node.get_next_node()
-        arr.append(current_node)
-        print(arr)
+        if self.head:
+            curr = self.head
+            while curr.next != self.head:
+                arr.append(curr)
+                curr = curr.next
+            arr.append(curr)
+                
+        return "{}".format(arr)
 
-    #Adding Node to end of list
-    def append(self, Node):
+    #Length of CLL
+    def get_length(self):
+        count = 0
         if not self.head:
-            self.head = Node
-            self.head.set_next_node(self.head)
+            return count
         else:
             curr = self.head
-            while curr.get_next_node() != self.head:
-                curr = curr.get_next_node()
-            curr.set_next_node(Node)
-            Node.set_next_node(self.head)
-            
-            
+            while curr.next != self.head:
+                curr = curr.next
+                count += 1
+            count += 1
+            return count
 
-    #Adding Node to start of list
-    def prepend(self, Node):
+
+    #Adding node to end of list
+    def append(self, value):
+        newNode = Node(value)
         if not self.head:
-            self.head = Node
-            self.head.set_next_node(self.head)
+            self.head = newNode
+            self.head.next = newNode
         else:
-            temp1 = self.head
-            temp2 = self.head
-            Node.set_next_node(self.head)
-            self.head = Node
-            while temp2.get_next_node() != temp1:
-                temp2 = temp2.get_next_node()
-            temp2.set_next_node(self.head)
-            
-    #Removing specicified Node
-    def remove(self, Node):
-        if self.head == Node and self.head.get_next_node() == self.head:
-            self.head = None
-
-        elif self.head == Node and self.head.get_next_node() != self.head:
-            temp = self.head
-            self.head = self.head.get_next_node()
             curr = self.head
-            while curr.get_next_node() != temp:
-               curr = curr.get_next_node()
-            curr.set_next_node(self.head)
+            while curr.next != self.head:
+                curr = curr.next
+            curr.next = newNode
+            newNode.next = self.head
+    
+    #Adding node to start of list
+    def prepend(self, value):
+        newNode = Node(value)
+        if not self.head:
+            self.head = newNode
+            self.head.next = newNode
+        else:
+            curr = self.head
+            while curr.next != self.head:
+                curr = curr.next
+            curr.next = newNode
+            newNode.next = self.head
+            self.head = newNode
+
+    #Removing node with specific value
+    def remove(self, value):
+        if self.head.value == value:
+            if not self.head.next:
+                self.head = None
+            else:
+                curr = self.head
+                while curr.next != self.head:
+                    curr = curr.next
+                curr.next = self.head.next
+                self.head = self.head.next
         else:
             curr = self.head
             prev = None
-            while curr and curr != Node:
+            while curr and curr.value != value:
                 prev = curr
-                curr = curr.get_next_node()
-            if curr.get_next_node() == self.head:
-                prev.set_next_node(self.head)
+                curr = curr.next
+            if curr.next == self.head:
+                prev.next = self.head
             else:
-                prev.set_next_node(curr.get_next_node())
+                prev.next = curr.next
 
-    #Getting length of circular list
-    def get_length(self):
-        count = 0
-        curr = self.head
-        while curr and curr.get_next_node() != self.head:
-            count += 1
-            curr = curr.get_next_node()
-        count += 1
-        return count
-
-    #Split linked list
+    #Split linked list into two
     def split_list(self):
-        length = self.get_length()
-        if length == 0:
-            return None
-        if length == 1:
-            return self.head
-        
-        num_iter = length//2
+        if not self.head or not self.head.next:
+            return
+        num_iter = self.get_length()//2 - 1
+        curr = self.head
+        for x in range(num_iter):
+            curr = curr.next
+            nxt = curr.next
+        lst1 = CLL()
+        lst1.head = nxt
+        ptr1 = lst1.head
+        while ptr1.next != self.head:
+            ptr1 = ptr1.next
+        ptr1.next = lst1.head
 
+        curr.next = self.head
+
+        print(lst1)
+        print(self)
+
+    #Josephus problem
+    def josephus_problem(self, step):
+        if self.get_length() == 1 or self.get_length() == 0:
+            return None
         curr = self.head
         prev = None
-        for x in range(int(num_iter)):
-            prev = curr
-            curr = curr.get_next_node()
-        prev.set_next_node(self.head)
-        newList = CircularLinkedList()
-        
-        while curr.get_next_node() != self.head:
-            next = curr.get_next_node()
-            newList.append(curr)
-            curr = next
-        newList.append(curr)
+        while self.get_length() > 1:
+            for x in range(step - 1):
+                curr = curr.next
+            nxt = curr.next
+            self.remove(curr.value)
+            curr = nxt
 
-        self.visual()
-        newList.visual()
-
-    #Josephus Problem
-    def josephus_prob(self, step):
-        if self.get_length() == 0:
-            self.visual()
-        elif self.get_length() == 1:
-            self.visual()
-        else:
-            curr = self.head
-            while curr and self.get_length() != 1:
-                for x in range(int(step - 1)):
-                    curr = curr.get_next_node()
-                next = curr.get_next_node()
-                self.remove(curr)
-                curr = next
-            self.visual()
-
-#Checking is a list is a circular linked list
-def is_circular_list(lst):
-    curr = lst.head
-    while curr:
-        if curr.get_next_node() == lst.head:
-            return True
-        else:
-            curr = curr.get_next_node()
-    return False
-
-        
-
-
-
+        return curr
             
+
+
+        
+            
+
+        
+
+
                 
-    
-a1 = Node(1)
-a2 = Node(2)
-a3 = Node(3)
-a4 = Node(4)
-a5 = Node(5)
 
+lst = CLL()
+lst.append(1)
+lst.append(2)
+lst.append(3)
+lst.append(4)
+lst.append(5)
 
-cl = CircularLinkedList()
-cl.append(a3)
-cl.append(a4)
-cl.append(a5)
-cl.visual()
+print(lst)
+print(lst.josephus_problem(3))
 
 
 

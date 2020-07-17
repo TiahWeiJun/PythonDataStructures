@@ -7,139 +7,101 @@ sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
 from Nodes import Node
 
 class Stack:
-    def __init__(self, limit):
-        self.top = None
-        self.size = 0
+    def __init__(self, limit = 100):
+        self.list = []
         self.limit = limit
 
-    #Visual representation of stack 
-    def visual(self):
+    def __repr__(self):
+        newlst = self.list[::-1]
         string = ''
-        duplicate = copy.copy(self)
-        for x in range(duplicate.size):
-            string += str(duplicate.pop()) 
-            string += '\n'
-        print(string)
-
-
+        for x in newlst:
+            string += "{}".format(x)
+            string += "\n"
+        return string
 
     #Adding to top of stack
-    def push(self, Node):
-        if self.limit > self.size:
-            Node.set_next_node(self.top)
-            self.top = Node
-            self.size += 1
+    def push(self, value):
+        if len(self.list) < self.limit:
+            self.list.append(value)
         else:
-            print("Stack Overflow!")
+            print("Stack is full")
 
     #Removing and getting value from top of stack
     def pop(self):
-        if self.size != 0:
-            node_to_remove = self.top
-            self.top = self.top.get_next_node()
-            self.size -= 1
-            return node_to_remove
+        if len(self.list) > 0:
+            value = self.list.pop(-1)
+            return value
         else:
-            print("Stack Underflow!")
-    
+            print("Stack is empty")
+
     #Getting top value of stack
     def peek(self):
-        if self.size != 0:
-            return self.top
+        if len(self.list) > 0:
+            value = self.list[-1]
+            return value
         else:
-            print("Stack Underflow!")
-    
-    #Creating a reversed stack
+            print("Stack is empty")
+
+    #Reversing a stack
     def reverse(self):
-        newStack = Stack(100)
-        for x in range(self.size):
-            node = self.pop()
-            newStack.push(node)
-        return newStack
-
-    #Getting Max value from Stack:
-    def get_max(self):
-        if self.size == 0:
-            return None
-        else:
-            lst = []
-            for x in range(self.size):
-                value = self.pop().get_value()
-                lst.append(value)
-            return max(lst)
-            
+        self.list = self.list[::-1]
 
 
-#Reversing a string using stack
+#Reversing string using a stack
 def reverse_string(string):
-    stack = Stack(100)
+    stk = Stack()
     for item in string:
-        stack.push(Node(item))
+        stk.push(item)
     newstring = ''
-    for item in string:
-        x = stack.pop().get_value()
-        newstring += x
+    for i in range(len(string)):
+        newstring += stk.pop()
     return newstring
 
-#Converting integer value to Binary values
-def int_to_bin(num):
-    stack = Stack(100)
-    while num > 0:
-        remainder = num%2
-        stack.push(Node(remainder))
-        num = num//2
+#Convert integer to binary
+def int_to_binary(num):
+    stk = Stack()
+    while num != 0:
+        if num % 2 == 0:
+            stk.push(0)
+        elif num % 2 == 1:
+            stk.push(1)
+        num = num // 2
     string = ''
-    for x in range(stack.size):
-        binary_value = stack.pop().get_value()
-        string += str(binary_value)
+    for x in range(len(stk.list)):
+        string += str(stk.pop())
     return string
-
+    
 #Determine if parantheses in a string are balanced
-def pair_of_paran(x, y):
-    if x == '{' and y == '}':
-        return True
-    elif x == '[' and y == ']':
-        return True
-    elif x == '(' and y == ')':
+def balanced_paran(string):
+    newstr = string.replace(" ", "")
+    stk = Stack()
+    for item in newstr:
+        if item in ["}", ")" , "]"]:
+            if len(stk.list) == 0:
+                return False
+            else:
+                value = stk.pop()
+                if not parans_match(value, item):
+                    return False
+        elif item in ["{", "(" , "["]:
+            stk.push(item)
+           
+    if len(stk.list) == 0:
         return True
     else:
         return False
-    
 
-def balanced_paran(string):
-    stack = Stack(500)
-    index = 0
-    is_balanced = True
 
-    while index<len(string) and is_balanced:
-        char = string[index]
-        if char in "({[":
-            stack.push(Node(char))
-            
-        elif char in "}])":
-            if stack.size == 0:
-                is_balanced = False
-            else:
-                value = stack.pop().get_value()
-                if not pair_of_paran(value, char):  
-                    is_balanced = False
-        index += 1
-        
-
-    if stack.size == 0 and is_balanced:
+def parans_match(open, close):
+    if (open == "(" and close == ")") or (open == "{" and close == "}") or (open == "[" and close == "]"):
         return True
-    else: 
+    else:
         return False
 
+def test():
+    for i in range(6, -1, -1):
+            print(i)
 
-a1 = Node(1)
-a2 = Node(2)
-a3 = Node(3)
-a4 = Node(4)
-
-s = Stack(100)
-print(s.get_max())
-
-
+test()
 
 

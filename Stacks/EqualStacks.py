@@ -2,29 +2,26 @@
 
 #h1, h2 and h3 are lists 
 def equal_stacks(h1, h2, h3):
-    sizeh1 = sum(h1)
-    sizeh2 = sum(h2)
-    sizeh3 = sum(h3)
+    sum1 = sum(h1)
+    sum2 = sum(h2)
+    sum3 = sum(h3)
 
-    while not (sizeh1 == sizeh2 == sizeh3):
-        lst = [sizeh1, sizeh2, sizeh3]
-        max_value = max(lst)
-        if sizeh1 == max_value:
+    while not (sum1 == sum2 and sum2 == sum3):
+        largest = max(sum1, sum2, sum3)
+        if largest == sum1:
             h1.pop(0)
-            sizeh1 = sum(h1)
-        if sizeh2 == max_value:
+            sum1 = sum(h1)
+        if largest == sum2:
             h2.pop(0)
-            sizeh2 = sum(h2)
-        if sizeh3 == max_value:
+            sum2 = sum(h2)
+        if largest == sum3:
             h3.pop(0)
-            sizeh3 = sum(h3)
-    if sizeh1 == 0:
-        print("No answer")
-    else:
-        print(sizeh1)
+            sum3 = sum(h3)
+    return sum1
 
 
-h1 = [2,2,3,1,2]      
-h2 = [4,1,1]
-h3 = [2,1,2]
-equal_stacks(h1, h2, h3)
+
+h1 = [3,2,1,1,1]      
+h2 = [4,3,2]
+h3 = [1,1,4,1]
+print(equal_stacks(h1, h2, h3))

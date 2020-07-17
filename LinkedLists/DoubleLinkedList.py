@@ -3,177 +3,148 @@ class Node:
         self.value = value
         self.next = None
         self.prev = None
-    
+
     def __repr__(self):
         return "{}".format(self.value)
 
-    def get_value(self):
-        return self.value
 
-    def get_next_node(self):
-        return self.next
-    
-    def set_next_node(self, Node):
-        self.next = Node
-    
-    def get_prev_node(self):
-        return self.prev
-    
-    def set_prev_node(self, Node):
-        self.prev = Node
-
-
-class DoubleLinkedList:
+class DLL:
     def __init__(self):
         self.head = None
 
-    #Visual representation of linked list
-    def visual(self):
+    def __repr__(self):
         arr = []
-        current_node = self.head
-        while current_node:
-            arr.append(current_node)
-            current_node = current_node.get_next_node()
-        print(arr)
-    
+        if self.head:
+            curr = self.head
+            while curr:
+                arr.append(curr)
+                curr = curr.next
+        return "{}".format(arr)
+
+    #Get length
+    def get_length(self):
+        curr = self.head
+        count = 0
+        while curr:
+            count += 1
+            curr = curr.next
+        return count
+
     #Adding to end of list
-    def append(self, Node):
-        if not self.head:
-            self.head = Node
+    def append(self, value):
+        newNode = Node(value)
+        if self.head is None:
+            self.head = newNode
         else:
             curr = self.head
-            while curr.get_next_node():
-                curr = curr.get_next_node()
-            curr.set_next_node(Node)
-            Node.set_prev_node(curr)
-            
-            
+            while curr.next:
+                curr = curr.next
+            curr.next = newNode
+            newNode.prev = curr
+
     #Adding to start of list
-    def prepend(self, Node):
-        if not self.head:
-            self.head = Node
+    def prepend(self, value):
+        newNode = Node(value)
+        if self.head is None:
+            self.head = newNode
         else:
-            Node.set_next_node(self.head)
-            self.head.set_prev_node(Node)
-            self.head = Node
+            newNode.next = self.head
+            self.head.prev = newNode
+            self.head = newNode
 
-    #Reversing double linked list
+    #Reverse double linked list
     def reverse(self):
-        temp = None
         curr = self.head
-        while curr:
-            temp = curr.get_prev_node()
-            curr.set_prev_node(curr.get_next_node())
-            curr.set_next_node(temp)
-            curr = curr.get_prev_node()
-        if temp:
-            self.head = temp.get_prev_node()
+        nxt = curr.next
+        prev = None
+        while nxt:
+            curr.next = prev
+            curr.prev = nxt
+            prev = curr
+            curr = nxt
+            nxt = nxt.next
+        self.head = curr
+        self.head.next = prev
 
-    #Adding Node after specified node:
-    def add_after(self, specified_node, Node):
-        curr = self.head
-        while curr and curr != specified_node:
-            curr = curr.get_next_node()
-        if curr.get_next_node():
-            next = curr.get_next_node()
-            curr.set_next_node(Node)
-            Node.set_prev_node(curr)
-            Node.set_next_node(next)
-            next.set_prev_node(Node)
+    #Remove specific value/node
+    def remove_value(self, value):
+        if self.get_length() == 1:
+            self.head = self.head.next
+        elif self.head.value == value:
+            self.head = self.head.next
+            self.head.prev = None
         else:
-            curr.set_next_node(Node)
-            Node.set_prev_node(curr)
-
-    #Adding Node before specified node:
-    def add_before(self, specified_node, Node):
-        curr = self.head
-        while curr and curr != specified_node:
-            curr = curr.get_next_node()
-        if curr.get_prev_node():
-            prev = curr.get_prev_node()
-            curr.set_prev_node(Node)
-            Node.set_next_node(curr)
-            Node.set_prev_node(prev)
-            prev.set_next_node(Node)
-        else:
-            Node.set_next_node(curr)
-            curr.set_prev_node(Node)
-            self.head = Node
-
-    #Removing specific Node
-    def remove(self, Node):
-        curr = self.head
-        if curr == Node:
-            self.head = curr.get_next_node()
-            self.head.set_prev_node(None)
-        else:
-            while curr and curr != Node:
-                curr = curr.get_next_node()
-            prev = curr.get_prev_node()
-            if not curr.get_next_node():
-                prev.set_next_node(None)
+            curr = self.head
+            prev = None
+            while curr and curr.value != value:
+                prev = curr
+                curr = curr.next
+            if curr.next:
+                nxt = curr.next
+                prev.next = curr.next
+                nxt.prev = prev
             else:
-                next = curr.get_next_node()
-                prev.set_next_node(next)
-                next.set_prev_node(prev)
-    
+                prev.next = None
+
     #Removing duplicates
-    def remove_duplicates(self):
-        curr = self.head
-        while curr:
-            pointer = curr.get_next_node()
-            while pointer:
-                if pointer.get_value() != curr.get_value():
-                    pointer = pointer.get_next_node()
-                else:
-                    if not pointer.get_next_node():
-                        prev = pointer.get_prev_node()
-                        prev.set_next_node(None)
+    def remove_dups(self):
+        ptr1 = self.head
+        while ptr1:
+            prev = ptr1
+            ptr2 = ptr1.next
+            while ptr2:
+                if ptr1.value == ptr2.value:
+                    if ptr2.next:
+                        nxt = ptr2.next
+                        prev.next = nxt
+                        nxt.prev = prev
+                        ptr2 = nxt
                     else:
-                        next = pointer.get_next_node()
-                        prev = pointer.get_prev_node()
-                        prev.set_next_node(next)
-                        next.set_prev_node(prev)
+                        prev.next = None
+                        ptr2 = ptr2.next
+                else:
+                    prev = ptr2
+                    ptr2 = ptr2.next
+            ptr1 = ptr1.next
 
-                    pointer = pointer.get_next_node()
-   
-            curr = curr.get_next_node()
+    #Adding node to sorted DLL(ascending order)
+    def add_node_to_sorted(self, value):
+        newNode = Node(value)
+        if not self.head:
+            self.head = newNode
+        else:
+            curr = self.head
+            prev = None
+            while curr:
+                if value <= curr.value:
+                    if not prev:
+                        newNode.next = self.head
+                        self.head.prev = newNode
+                        self.head = newNode
+                    else:
+                        prev.next = newNode
+                        newNode.prev = prev
+                        newNode.next = curr
+                        curr.prev = newNode
+                    break
+                else:
+                    prev = curr
+                    curr = curr.next
+            prev.next = newNode
+            newNode.prev = prev
 
-    #Finding pairs with sum
-    def pairs_with_sum(self, sum):
-        pairlist = []
-        curr = self.head
-        while curr:
-            next = curr.get_next_node()
-            while next:
-                if next.get_value() + curr.get_value() == sum:
-                    pairlist.append([curr, next])
-                next = next.get_next_node()
-            curr = curr.get_next_node()
-        return pairlist
+                        
 
-a1 = Node(1)
-a2 = Node(2)
-a3 = Node(3)
-a4 = Node(4)
-a5 = Node(5)
-a6 = Node(6)
-a7 = Node(7)
-a8 = Node(8)
-a9 = Node(9)
+            
 
-dl = DoubleLinkedList()
-dl.append(a1)
-dl.append(a2)
-dl.append(a3)
-dl.append(a4)
-dl.append(a5)
-dl.append(a6)
-dl.append(a7)
-dl.append(a8)
-dl.append(a9)
-dl.visual()
-list1 = dl.pairs_with_sum(10)
-print(list1)
+lst = DLL()
+lst.append(2)
+lst.append(4)
+lst.append(6)
+lst.append(8)
+lst.append(10)
+lst.append(12)
 
-
+print(lst)
+lst.add_node_to_sorted(13)
+print(lst)
