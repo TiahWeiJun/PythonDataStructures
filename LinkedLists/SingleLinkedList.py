@@ -1,6 +1,7 @@
 import sys
 
-sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
+sys.path.insert(1, '/Users/tiahw/Documents/Projects/PythonDataStructures/Nodes')
+
 
 from Nodes import Node
 
@@ -250,14 +251,6 @@ lst.append(4)
 lst.append(5)
 lst.append(6)
 
-lst1 = SLL()
-lst1.append(1)
-lst1.append(6)
-lst1.append(2)
-lst1.append(3)
-lst1.append(4)
-lst1.append(5)
 
 
-
-print(compare(lst1, lst))
+print(lst)

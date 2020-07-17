@@ -1,11 +1,3 @@
-import sys
-import copy
-
-sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
-
-
-from Nodes import Node
-
 class Stack:
     def __init__(self, limit = 100):
         self.list = []

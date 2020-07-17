@@ -1,8 +1,7 @@
 import sys
 
-sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
-
-sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Stacks')
+sys.path.insert(1, '/Users/tiahw/Documents/Projects/PythonDataStructures/Nodes')
+sys.path.insert(1, '/Users/tiahw/Documents/Projects/PythonDataStructures/Stacks')
 
 
 from Stacks import Stack

@@ -1,8 +1,7 @@
 import sys
 import copy
 
-sys.path.insert(1, '/Users/Admin/Documents/Projects/DSA/Nodes')
-
+sys.path.insert(1, '/Users/tiahw/Documents/Projects/PythonDataStructures/Nodes')
 
 from Nodes import Node
 
