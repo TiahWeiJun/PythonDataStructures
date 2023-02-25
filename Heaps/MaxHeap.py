@@ -5,18 +5,23 @@ class MaxHeap:
         self.list = [None]
         self.count = 0
 
+    // Use for heapify up, when you insert elements
     def get_parent_idx(self, idx):
         return idx//2
 
+    // Use for heapify down, when u remove element
     def get_left_child_idx(self, idx):
         return idx*2 
 
+    // Use for heapify down, when u remove element
     def get_right_child_idx(self, idx):
         return idx*2 + 1
 
+    // Use for heapify down, when u remove element
     def child_present(self, idx):
        return self.get_left_child_idx(idx) <= self.count
 
+    // Use for heapify down, when u remove element
     def get_larger_child_idx(self, idx):
         left_child_idx = self.get_left_child_idx(idx)
         right_child_idx = self.get_right_child_idx(idx)
@@ -38,6 +43,7 @@ class MaxHeap:
         if len(self.list) > 1:
            self.heapify_up()
     
+    // Compare lowest element see if bigger/smaller then top elements
     def heapify_up(self):
         idx = self.count
         while self.get_parent_idx(idx):
